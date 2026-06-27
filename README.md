@@ -231,5 +231,9 @@ The database is **auto-created and seeded** with realistic sample data on first 
 - Built for **national-level hackathon demonstration**.
 
 ---
+## Author
+ - Nilesh Prajapati
 
+## Made for Hackcthon purpose
+ - IDBI Hackhathon 2026 
 *WealthWise AI — Smart, Beautiful, and Impactful* 💜
