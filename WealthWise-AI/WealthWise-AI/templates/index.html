@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>WealthWise AI — Smart Wealth Management</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}"/>
+</head>
+<body class="landing-page">
+  <canvas id="particles"></canvas>
+  <div class="cursor-glow" id="cursorGlow"></div>
+
+  <header class="landing-nav">
+    <div class="landing-logo">
+      <div class="logo-mark">W</div>
+      <span>WealthWise <span class="logo-ai">AI</span></span>
+    </div>
+    <nav class="landing-nav-links">
+      <a href="#features">Features</a>
+      <a href="#about">About</a>
+      <a href="/dashboard" class="btn-nav-cta">Open Dashboard →</a>
+    </nav>
+  </header>
+
+  <main class="landing-hero">
+    <div class="hero-badge">✦ AI-Powered Wealth Management</div>
+    <h1 class="hero-headline">
+      Grow Your Wealth<br/>
+      <span class="hero-gradient">Intelligently.</span>
+    </h1>
+    <p class="hero-sub">WealthWise AI combines cutting-edge financial analytics with Groq-powered AI to give you personalized wealth insights, goal planning, and smart spending analysis — all in one beautiful dashboard.</p>
+    <div class="hero-actions">
+      <a href="/dashboard" class="btn-hero-primary">
+        <span class="btn-star">★</span> Launch Dashboard
+      </a>
+      <a href="#features" class="btn-hero-outline">Explore Features</a>
+    </div>
+    <div class="hero-stats">
+      <div class="hero-stat"><span class="stat-num">84</span><span class="stat-lbl">Avg Health Score</span></div>
+      <div class="hero-stat-divider"></div>
+      <div class="hero-stat"><span class="stat-num">₹12L+</span><span class="stat-lbl">Wealth Tracked</span></div>
+      <div class="hero-stat-divider"></div>
+      <div class="hero-stat"><span class="stat-num">3x</span><span class="stat-lbl">Faster Goal Reach</span></div>
+    </div>
+  </main>
+
+  <section class="landing-features" id="features">
+    <div class="section-eyebrow">Everything you need</div>
+    <h2 class="section-title">Built for serious wealth builders</h2>
+    <div class="features-grid">
+      <div class="feature-card">
+        <div class="feature-icon">📊</div>
+        <h3>Financial Health Score</h3>
+        <p>Real-time scoring engine analyzing savings, debt, investments, and spending patterns for a comprehensive health metric.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">🎯</div>
+        <h3>Goal-Based Planning</h3>
+        <p>Set wealth goals — home, education, travel — and get AI-powered forecasts, monthly targets, and success probabilities.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">🤖</div>
+        <h3>Groq AI Insights</h3>
+        <p>Llama-powered financial advisor generating personalized recommendations, spending alerts, and optimization strategies.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">🏦</div>
+        <h3>Loan Readiness</h3>
+        <p>Assess your loan eligibility with a dynamic scoring system analyzing income, savings, and debt obligations.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">📈</div>
+        <h3>Wealth Growth Analytics</h3>
+        <p>Interactive charts tracking your wealth trajectory with animated visualizations and predictive trend analysis.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">⚡</div>
+        <h3>Predictive Alerts</h3>
+        <p>Proactive notifications for overspending, goal delays, and investment opportunities before they impact your finances.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="landing-cta">
+    <div class="cta-glow"></div>
+    <h2>Ready to transform your finances?</h2>
+    <p>Join thousands using WealthWise AI to build smarter wealth.</p>
+    <a href="/dashboard" class="btn-hero-primary">Open Dashboard →</a>
+  </section>
+
+  <footer class="landing-footer">
+    <div class="footer-logo">
+      <div class="logo-mark sm">W</div>
+      <span>WealthWise <span class="logo-ai">AI</span></span>
+    </div>
+    <p class="footer-note">Built for hackathon demonstration. Data is simulated.</p>
+    <p class="footer-note">Future: Authentication · Bank Sync · Investment Marketplace · Mobile App</p>
+  </footer>
+
+  <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+</body>
+</html>
