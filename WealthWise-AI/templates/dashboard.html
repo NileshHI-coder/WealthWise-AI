@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>WealthWise AI — Dashboard</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}"/>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+</head>
+<body>
+  <!-- Particle Canvas -->
+  <canvas id="particles"></canvas>
+  <!-- Cursor glow -->
+  <div class="cursor-glow" id="cursorGlow"></div>
+
+  <div class="app-wrapper">
+
+    <!-- ── Left Sidebar ─────────────────────────────── -->
+    <aside class="sidebar" id="sidebar">
+      <div class="sidebar-logo">
+        <div class="logo-mark">W</div>
+        <span class="logo-text">WealthWise <span class="logo-ai">AI</span></span>
+      </div>
+
+      <nav class="sidebar-nav">
+    <a href="/dashboard" class="nav-item">
+        <span class="nav-icon">⬡</span>
+        <span class="nav-label">Dashboard</span>
+    </a>
+
+    <a href="/reports" class="nav-item">
+        <span class="nav-icon">▣</span>
+        <span class="nav-label">Reports</span>
+    </a>
+
+    <a href="/chatbot" class="nav-item">
+        <span class="nav-icon">💬</span>
+        <span class="nav-label">AI Advisor</span>
+    </a>
+    <a href="/advisor" class="nav-item">
+        <span class="nav-icon">🤖</span>
+        <span class="nav-label">AI Avatar</span>
+    </a>
+</nav>
+      <div class="sidebar-promo">
+        <div class="promo-glow"></div>
+        <div class="promo-cube">
+          <div class="cube">
+            <div class="face front"></div><div class="face back"></div>
+            <div class="face left"></div><div class="face right"></div>
+            <div class="face top"></div><div class="face bottom"></div>
+          </div>
+        </div>
+        <p class="promo-text">Upgrade your financial future with smart planning!</p>
+        <button class="btn-promo" onclick="openAIChat()">Get Started</button>
+      </div>
+    </aside>
+
+    <!-- ── Main Content ──────────────────────────────── -->
+    <div class="main-content">
+
+      <!-- Top Bar -->
+      <header class="topbar">
+        <button class="hamburger" id="hamburger">☰</button>
+        <div class="topbar-brand">
+          <span class="brand-w">W</span>ealthWise <span class="brand-ai">AI</span>
+        </div>
+        <div class="topbar-center" id="topbarGreeting">Your AI-Powered Wealth Companion ✨</div>
+        <div class="topbar-right">
+          <button class="theme-toggle" id="themeToggle">🌙</button>
+          <button class="btn-ai-ask" onclick="openAIChat()">★ Ask WealthWise AI</button>
+          <div class="avatar-wrap">
+            <div class="avatar">N</div>
+          </div>
+        </div>
+      </header>
+
+      <!-- Scrollable Page -->
+      <div class="page" id="pageContent">
+
+        <!-- Hero Greeting -->
+        <div class="hero-greeting reveal">
+          <div>
+            <h1 class="greeting-title" id="greetingTitle">Good Evening, Nilesh! 👋</h1>
+            <p class="greeting-sub">Let's grow your wealth together.</p>
+          </div>
+          <button class="btn-ai-ask hero-ask" onclick="openAIChat()">★ Ask WealthWise AI</button>
+        </div>
+
+        <!-- KPI Cards -->
+        <div class="kpi-grid">
+          <div class="kpi-card reveal" style="--delay:0.05s">
+            <div class="kpi-header">
+              <span class="kpi-label">Financial Health Score</span>
+              <div class="kpi-icon kpi-icon--green">📈</div>
+            </div>
+            <div class="kpi-score-wrap">
+              <canvas id="scoreGauge" width="120" height="120"></canvas>
+              <div class="kpi-score-center">
+                <span class="kpi-score-num" id="healthScore">84</span>
+                <span class="kpi-score-denom">/100</span>
+              </div>
+            </div>
+            <div class="kpi-score-label" id="healthScoreLabel">Great! You're on the right track.</div>
+          </div>
+
+          <div class="kpi-card reveal" style="--delay:0.1s">
+            <div class="kpi-header">
+              <span class="kpi-label">Total Balance</span>
+              <div class="kpi-icon kpi-icon--blue">💼</div>
+            </div>
+            <div class="kpi-amount" id="totalBalance">₹12,45,230</div>
+            <div class="kpi-change positive" id="balanceChange">▲ +8.5% from last month</div>
+          </div>
+
+          <div class="kpi-card reveal" style="--delay:0.15s">
+            <div class="kpi-header">
+              <span class="kpi-label">Monthly Savings</span>
+              <div class="kpi-icon kpi-icon--purple">🐷</div>
+            </div>
+            <div class="kpi-amount" id="monthlySavings">₹28,540</div>
+            <div class="kpi-change positive" id="savingsChange">▲ +12.3% from last month</div>
+          </div>
+
+          <div class="kpi-card reveal" style="--delay:0.2s">
+            <div class="kpi-header">
+              <span class="kpi-label">Investments Value</span>
+              <div class="kpi-icon kpi-icon--orange">📊</div>
+            </div>
+            <div class="kpi-amount" id="investmentsValue">₹8,75,430</div>
+            <div class="kpi-change positive" id="investChange">▲ +15.7% from last month</div>
+          </div>
+        </div>
+
+        <!-- Mid Section: Spending + Wealth Growth -->
+        <div class="mid-grid">
+
+          <!-- Spending Doughnut -->
+          <div class="card reveal" style="--delay:0.25s">
+            <div class="card-header">
+              <h2 class="card-title">Spending Overview</h2>
+            </div>
+            <div class="spending-layout">
+              <div class="doughnut-wrap">
+                <canvas id="spendingChart" width="220" height="220"></canvas>
+                <div class="doughnut-center">
+                  <div class="doughnut-total" id="spendingTotal">₹65,430</div>
+                  <div class="doughnut-sub">This Month</div>
+                </div>
+              </div>
+              <div class="spending-legend" id="spendingLegend"></div>
+            </div>
+          </div>
+
+          <!-- Wealth Growth Line -->
+          <div class="card reveal" style="--delay:0.3s">
+            <div class="card-header">
+              <h2 class="card-title">Wealth Growth</h2>
+              <select class="period-select" id="periodSelect">
+                <option value="year">This Year</option>
+                <option value="6m">6 Months</option>
+                <option value="3m">3 Months</option>
+              </select>
+            </div>
+            <div class="chart-wrap">
+              <canvas id="wealthChart"></canvas>
+            </div>
+          </div>
+        </div>
+
+        <!-- Bottom Section: Goals + Loan + AI Insights -->
+        <div class="bottom-grid">
+
+          <!-- Goals -->
+          <div class="card reveal" style="--delay:0.35s">
+            <div class="card-header">
+              <h2 class="card-title">Goals Progress</h2>
+              <button class="btn-text" onclick="scrollToSection('goals')">View All</button>
+            </div>
+            <div id="goalsList"></div>
+          </div>
+
+          <!-- Loan Readiness -->
+          <div class="card reveal" style="--delay:0.4s">
+            <div class="card-header">
+              <h2 class="card-title">Loan Readiness</h2>
+            </div>
+            <div class="loan-layout">
+              <div class="loan-gauge-wrap">
+                <canvas id="loanGauge" width="160" height="160"></canvas>
+                <div class="loan-gauge-center">
+                  <span class="loan-score" id="loanScore">78</span>
+                  <span class="loan-denom">/100</span>
+                </div>
+              </div>
+              <div class="loan-label" id="loanLabel">Good! You are loan ready.</div>
+            </div>
+            <div class="loan-details">
+              <div class="loan-detail-item">
+                <span class="loan-detail-label">Eligible Loan Amount</span>
+                <span class="loan-detail-val" id="loanAmount">₹12,00,000</span>
+              </div>
+              <div class="loan-detail-item">
+                <span class="loan-detail-label">Suggested Loan</span>
+                <span class="loan-detail-val" id="loanType">Personal Loan</span>
+              </div>
+            </div>
+            
+          </div>
+
+          <!-- AI Insights -->
+          <div class="card card--insights reveal" style="--delay:0.45s">
+            <div class="card-header">
+              <h2 class="card-title">AI Insights for You ✨</h2>
+              <button class="btn-icon" onclick="loadInsights()" id="refreshInsights" title="Refresh">↻</button>
+            </div>
+            <div id="insightsList" class="insights-list">
+              <div class="insight-skeleton"></div>
+              <div class="insight-skeleton"></div>
+              <div class="insight-skeleton"></div>
+            </div>
+            
+          </div>
+
+        </div><!-- /bottom-grid -->
+
+      </div><!-- /page -->
+    </div><!-- /main-content -->
+  </div><!-- /app-wrapper -->
+
+  <!-- ── AI Chat Modal ──────────────────────────────── -->
+  <div class="modal-backdrop" id="aiModal">
+    <div class="modal-box">
+      <div class="modal-header">
+        <div class="modal-title">✦ WealthWise AI Advisor</div>
+        <button class="modal-close" onclick="closeAIChat()">✕</button>
+      </div>
+      <div class="chat-messages" id="chatMessages">
+        <div class="chat-msg bot">
+          <div class="chat-bubble">Hi Nilesh! 👋 I'm your AI financial advisor. Ask me anything about your finances, investments, or wealth goals!</div>
+        </div>
+      </div>
+      <div class="chat-input-wrap">
+        <input type="text" class="chat-input" id="chatInput" placeholder="Ask about your finances..." onkeydown="if(event.key==='Enter') sendChat()"/>
+        <button class="btn-send" onclick="sendChat()">➤</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── Update Profile Modal ──────────────────────── -->
+  <div class="modal-backdrop" id="profileModal">
+    <div class="modal-box">
+      <div class="modal-header">
+        <div class="modal-title">⚙ Update Financial Profile</div>
+        <button class="modal-close" onclick="closeProfileModal()">✕</button>
+      </div>
+      <div class="profile-form">
+        <div class="form-group">
+          <label>Monthly Income (₹)</label>
+          <input type="number" id="pIncome" value="95000" class="form-input"/>
+        </div>
+        <div class="form-group">
+          <label>Monthly Expenses (₹)</label>
+          <input type="number" id="pExpenses" value="65430" class="form-input"/>
+        </div>
+        <div class="form-group">
+          <label>Total Savings (₹)</label>
+          <input type="number" id="pSavings" value="245000" class="form-input"/>
+        </div>
+        <div class="form-group">
+          <label>Total Investments (₹)</label>
+          <input type="number" id="pInvestments" value="875430" class="form-input"/>
+        </div>
+        <div class="form-group">
+          <label>Total Debt (₹)</label>
+          <input type="number" id="pDebt" value="120000" class="form-input"/>
+        </div>
+        <button class="btn-primary" onclick="updateProfile()">Update & Recalculate</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+</body>
+</html>

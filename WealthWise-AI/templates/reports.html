@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>WealthWise AI — Reports</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}"/>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+</head>
+<body>
+  <canvas id="particles"></canvas>
+  <div class="cursor-glow" id="cursorGlow"></div>
+
+  <div class="app-wrapper">
+    <aside class="sidebar" id="sidebar">
+      <div class="sidebar-logo">
+        <div class="logo-mark">W</div>
+        <span class="logo-text">WealthWise <span class="logo-ai">AI</span></span>
+      </div>
+      <nav class="sidebar-nav">
+        <a href="/dashboard" class="nav-item" data-section="dashboard"><span class="nav-icon">⬡</span><span class="nav-label">Dashboard</span></a>
+        <a href="#" class="nav-item" data-section="reports"><span class="nav-icon">▣</span><span class="nav-label">Reports</span></a>
+      </nav>
+    </aside>
+    <div class="main-content">
+      <header class="topbar">
+        <button class="hamburger" id="hamburger">☰</button>
+        <div class="topbar-brand"><span class="brand-w">W</span>ealthWise <span class="brand-ai">AI</span></div>
+        <div class="topbar-center">Financial Reports</div>
+        <div class="topbar-right">
+          <button class="theme-toggle" id="themeToggle">🌙</button>
+          <div class="avatar-wrap"><div class="avatar">N</div></div>
+        </div>
+      </header>
+      <div class="page">
+        <div class="hero-greeting reveal">
+          <h1 class="greeting-title">Financial Reports 📋</h1>
+          <p class="greeting-sub">Detailed analysis of your financial performance.</p>
+        </div>
+        <div class="reports-grid">
+          <div class="card reveal">
+            <div class="card-header"><h2 class="card-title">Spending by Category</h2></div>
+            <canvas id="reportSpending"></canvas>
+          </div>
+          <div class="card reveal" style="--delay:0.1s">
+            <div class="card-header"><h2 class="card-title">Monthly Income vs Expenses</h2></div>
+            <canvas id="reportIncomeExpense"></canvas>
+          </div>
+          <div class="card reveal" style="--delay:0.2s">
+            <div class="card-header"><h2 class="card-title">Goal Progress Summary</h2></div>
+            <div id="reportGoals"></div>
+          </div>
+          <div class="card reveal" style="--delay:0.3s">
+            <div class="card-header"><h2 class="card-title">Investment Allocation</h2></div>
+            <canvas id="reportInvestment"></canvas>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      // Spending bar chart
+      new Chart(document.getElementById('reportSpending'), {
+        type: 'bar',
+        data: {
+          labels: ['Food', 'Shopping', 'Travel', 'Utilities', 'Entertainment'],
+          datasets: [{
+            label: 'This Month (₹)',
+            data: [26172, 16358, 13086, 6543, 3271],
+            backgroundColor: ['rgba(139,92,246,0.7)','rgba(59,130,246,0.7)','rgba(16,185,129,0.7)','rgba(245,158,11,0.7)','rgba(239,68,68,0.7)'],
+            borderRadius: 8,
+          }]
+        },
+        options: { responsive: true, plugins: { legend: { display: false } }, scales: { y: { grid: { color: 'rgba(255,255,255,0.05)' }, ticks: { color: '#94a3b8' } }, x: { grid: { display: false }, ticks: { color: '#94a3b8' } } } }
+      });
+
+      // Income vs Expense line
+      new Chart(document.getElementById('reportIncomeExpense'), {
+        type: 'line',
+        data: {
+          labels: ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'],
+          datasets: [
+            { label: 'Income', data: [90000,90000,92000,93000,94000,95000,95000,96000,96000,95000,97000,98000], borderColor: '#10b981', backgroundColor: 'rgba(16,185,129,0.1)', tension: 0.4, fill: true },
+            { label: 'Expenses', data: [68000,65000,67000,63000,66000,65000,64000,63000,62000,65430,64000,63000], borderColor: '#8b5cf6', backgroundColor: 'rgba(139,92,246,0.1)', tension: 0.4, fill: true }
+          ]
+        },
+        options: { responsive: true, plugins: { legend: { labels: { color: '#94a3b8' } } }, scales: { y: { grid: { color: 'rgba(255,255,255,0.05)' }, ticks: { color: '#94a3b8' } }, x: { grid: { display: false }, ticks: { color: '#94a3b8' } } } }
+      });
+
+      // Investment doughnut
+      new Chart(document.getElementById('reportInvestment'), {
+        type: 'doughnut',
+        data: {
+          labels: ['Mutual Funds', 'Stocks', 'FD', 'Gold', 'Others'],
+          datasets: [{ data: [40, 25, 20, 10, 5], backgroundColor: ['#8b5cf6','#3b82f6','#10b981','#f59e0b','#ef4444'], borderWidth: 0 }]
+        },
+        options: { responsive: true, plugins: { legend: { labels: { color: '#94a3b8' } } } }
+      });
+
+      // Goals
+      fetch('/api/goals').then(r => r.json()).then(data => {
+        const el = document.getElementById('reportGoals');
+        el.innerHTML = data.goals.map(g => `
+          <div class="goal-item">
+            <div class="goal-header">
+              <span class="goal-icon">${g.icon}</span>
+              <div class="goal-info"><div class="goal-name">${g.name}</div><div class="goal-amounts">₹${fmt(g.current_amount)} / ₹${fmt(g.target_amount)}</div></div>
+              <span class="goal-pct">${g.progress}%</span>
+            </div>
+            <div class="progress-track"><div class="progress-fill" style="width:${g.progress}%"></div></div>
+          </div>`).join('');
+      });
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WealthWise AI — Financial Advisor</title>
+
+```
+<link rel="stylesheet"
+      href="{{ url_for('static', filename='css/style.css') }}">
+```
+
+</head>
+<body>
+
+<canvas id="particles"></canvas>
+
+<div class="cursor-glow" id="cursorGlow"></div>
+
+<div class="app-wrapper">
+
+```
+<!-- Sidebar -->
+<aside class="sidebar" id="sidebar">
+
+    <div class="sidebar-logo">
+        <div class="logo-mark">W</div>
+        <span class="logo-text">
+            WealthWise <span class="logo-ai">AI</span>
+        </span>
+    </div>
+
+    <nav class="sidebar-nav">
+
+        <a href="/dashboard" class="nav-item">
+            <span class="nav-icon">⬡</span>
+            <span class="nav-label">Dashboard</span>
+        </a>
+
+        <a href="/reports" class="nav-item">
+            <span class="nav-icon">▣</span>
+            <span class="nav-label">Reports</span>
+        </a>
+
+        <a href="/chatbot" class="nav-item active">
+            <span class="nav-icon">💬</span>
+            <span class="nav-label">AI Advisor</span>
+        </a>
+
+    </nav>
+
+</aside>
+
+<!-- Main Content -->
+<div class="main-content">
+
+    <header class="topbar">
+
+        <button class="hamburger" id="hamburger">
+            ☰
+        </button>
+
+        <div class="topbar-brand">
+            <span class="brand-w">W</span>ealthWise
+            <span class="brand-ai">AI</span>
+        </div>
+
+        <div class="topbar-center">
+            AI Wealth Advisor
+        </div>
+
+        <div class="topbar-right">
+
+            <button class="theme-toggle" id="themeToggle">
+                🌙
+            </button>
+
+            <div class="avatar-wrap">
+                <div class="avatar">N</div>
+            </div>
+
+        </div>
+
+    </header>
+
+    <!-- Stats Cards -->
+
+    <div class="stats-grid">
+
+        <div class="stat-card">
+            <div class="stat-label">
+                Financial Score
+            </div>
+
+            <div class="stat-value"
+                 id="financialScore">
+                --
+            </div>
+        </div>
+
+        <div class="stat-card">
+            <div class="stat-label">
+                Loan Readiness
+            </div>
+
+            <div class="stat-value"
+                 id="loanScore">
+                --
+            </div>
+        </div>
+
+    </div>
+
+    <div class="page">
+
+        <div class="hero-greeting reveal">
+
+            <h1 class="greeting-title">
+                AI Financial Advisor 💬
+            </h1>
+
+            <p class="greeting-sub">
+                Ask anything about budgeting, investments,
+                savings, loans and financial planning.
+            </p>
+
+        </div>
+
+        <div class="card reveal chatbot-card">
+
+            <div id="chatMessages"
+                 class="chat-messages">
+
+                <div class="bot-message">
+                    👋 Hello Nilesh!
+                    <br><br>
+                    I am your WealthWise AI Financial Advisor.
+                    <br><br>
+                    You can ask me:
+                    <ul>
+                        <li>How can I improve my financial score?</li>
+                        <li>Can I afford a home loan?</li>
+                        <li>How much should I invest monthly?</li>
+                        <li>How can I reduce my expenses?</li>
+                    </ul>
+
+                </div>
+
+            </div>
+
+            <div class="chat-input-wrapper">
+
+                <input
+                    type="text"
+                    id="userInput"
+                    class="chat-input"
+                    placeholder="Ask your financial question..."
+                >
+                <button
+                    class="btn-primary"
+                    onclick="sendMessage()">
+                    Send 🚀
+                </button>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+```
+
+</div>
+
+<script src="{{ url_for('static', filename='js/script.js') }}"></script>
+<script>
+
+document.addEventListener("DOMContentLoaded", async () => {
+
+    try {
+
+        const response =
+            await fetch("/api/dashboard");
+
+        const data =
+            await response.json();
+
+        document.getElementById(
+            "financialScore"
+        ).textContent =
+            data.financial_score.score;
+
+        document.getElementById(
+            "loanScore"
+        ).textContent =
+            data.loan_readiness.score;
+
+    }
+    catch(error){
+
+        console.error(error);
+
+    }
+
+});
+
+document.getElementById("userInput")
+.addEventListener("keypress", function(e){
+
+    if(e.key === "Enter"){
+        sendMessage();
+    }
+
+});
+
+</script>
+
+</body>
+</html>
