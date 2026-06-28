@@ -1,5 +1,0 @@
-Flask
-gunicorn
-groq
-httpx
-python-dotenv
